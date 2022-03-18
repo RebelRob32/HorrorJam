@@ -6,6 +6,6 @@ public class AliceStats : ScriptableObject
 {
    public float range;
    public float speed;
-    public float fear;
+   public float fear;
 
 }

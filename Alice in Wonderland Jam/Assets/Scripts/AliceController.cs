@@ -53,6 +53,7 @@ public class AliceController : MonoBehaviour
     {
         FollowRabbit();
         Hide();
+        RunAway();
     }
 
     public void FollowRabbit()
@@ -81,7 +82,17 @@ public class AliceController : MonoBehaviour
 
     public void RunAway()
     {
+        if(fearLevel >= 75f)
+        {
+            StartCoroutine(EscapeRabbit());
+        }
+    }
 
+    IEnumerator EscapeRabbit()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, -rabbit.transform.position, Time.deltaTime * stats.speed);
+        yield return new WaitForSeconds(5);
+        transform.position = transform.position;
     }
 
     IEnumerator FollowForSeconds()
