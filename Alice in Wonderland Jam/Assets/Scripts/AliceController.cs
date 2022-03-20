@@ -10,6 +10,7 @@ public class AliceController : MonoBehaviour
 
     public Transform closestHidingSpot;
     public float fearLevel;
+    
 
     public bool rabbitClose;
     public bool isScared;
@@ -98,7 +99,7 @@ public class AliceController : MonoBehaviour
     IEnumerator FollowForSeconds()
     {
         transform.position = Vector3.MoveTowards(this.transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
         transform.position = transform.position;
     }
 
