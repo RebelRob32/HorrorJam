@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9371a20132a493b479a89fda4c47aec6, type: 3}
   m_Name: Rabbit
   m_EditorClassIdentifier: 
-  range: 1.5
+  closeRange: 0.5
   callRange: 2
-  speed: 1
-  rotateSpeed: 1
-  smoothTime: 0.1
+  speed: 20
+  rotateSpeed: 5
+  smoothTime: 0
   turnSmooth: -0.18659137

@@ -8,11 +8,14 @@ public class RabbitController : MonoBehaviour
     public RabbitStats stats;
     public CharacterController controller;
     public Vector3 direction;
+ 
+
     public GameObject alice;
     public GameObject calloutText;
     public Transform followCam;
     public Transform startPoint;
-    
+
+    private Vector3 inputs = Vector3.zero;
     public float callout;
 
     public bool inRange;
@@ -51,26 +54,27 @@ public class RabbitController : MonoBehaviour
 
     public void FixedUpdate()
     {
+       
         PlayerMove();
     }
 
     public void PlayerMove()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-        if(direction.magnitude >= 0.1f)
+        inputs = Vector3.zero;
+        inputs.x = Input.GetAxisRaw("Horizontal");
+        inputs.z = Input.GetAxisRaw("Vertical");
+
+        var inputDir = Quaternion.AngleAxis(followCam.rotation.eulerAngles.y, Vector3.up) * inputs;
+      
+        if (inputDir.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + followCam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref stats.smoothTime, stats.turnSmooth);
-            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+            inputDir = inputDir.normalized;
 
-            controller.Move(direction * stats.speed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(inputDir, Vector3.up), stats.rotateSpeed * Time.deltaTime);
+
+            controller.SimpleMove(inputDir.normalized * stats.speed * 2f * Time.deltaTime);
         }
-
-       
-
     }
 
     public void checkRange()
