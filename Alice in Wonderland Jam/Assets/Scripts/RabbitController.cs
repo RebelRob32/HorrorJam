@@ -41,6 +41,7 @@ public class RabbitController : MonoBehaviour
         alice = GameObject.FindGameObjectWithTag("Alice");
         gm = GameObject.FindObjectOfType<GameManager>();
         startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
+        
 
         gameObject.transform.position = startPoint.transform.position;
         
@@ -149,14 +150,5 @@ public class RabbitController : MonoBehaviour
         isHiding = false;
     }
 
-    public void OnTriggerEnter(Collider col)
-    {
-        if(col == GameObject.FindGameObjectWithTag("Trigger") && isClose == true && alice.GetComponent<AliceController>().fearLevel <= 50f)
-        {
-            gm.MoveToWonderland();
-        }
-    }
-
-
-
+   
 }

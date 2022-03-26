@@ -9,6 +9,8 @@ TagManager:
   - Trigger
   - StartPoint
   - Hiding
+  - Enemy
+  - Ending
   layers:
   - Default
   - TransparentFX
