@@ -36,16 +36,10 @@ public class MainCam : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (upgrading)
-        {
-            transform.position = new Vector3(0, 22, -37);
-            transform.eulerAngles = new Vector3(15, 0, 0);
-        }
-        else
-        {
+       
             transform.position = playerTransform.position + offset;
             transform.LookAt(playerTransform.position);
-        }
+        
     }
 
 }
