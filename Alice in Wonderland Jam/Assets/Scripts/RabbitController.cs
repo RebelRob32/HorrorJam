@@ -12,16 +12,19 @@ public class RabbitController : MonoBehaviour
 
     public GameObject alice;
     public GameObject calloutText;
+    public GameObject sootheText;
     public Transform followCam;
     public Transform startPoint;
 
     private Vector3 inputs = Vector3.zero;
     public float callout;
+    public float sootheCharges;
 
     public bool inRange;
     public bool isCalling;
     public bool isClose;
     public bool isHiding;
+    public bool outOfCharges;
 
     #region WireSphere
     private void OnDrawGizmosSelected()
@@ -37,6 +40,7 @@ public class RabbitController : MonoBehaviour
     public void Awake()
     {
         callout = stats.callRange;
+        sootheCharges = 3f;
         controller = GetComponent<CharacterController>();
         alice = GameObject.FindGameObjectWithTag("Alice");
         gm = GameObject.FindObjectOfType<GameManager>();
@@ -51,6 +55,7 @@ public class RabbitController : MonoBehaviour
     {
         checkRange();
         CallOut();
+        Soothe();
     }
 
     public void FixedUpdate()
@@ -88,7 +93,7 @@ public class RabbitController : MonoBehaviour
         }
         else
         {
-            return;
+            inRange = false;
         }
         if(distance <= stats.closeRange)
         {
@@ -96,7 +101,7 @@ public class RabbitController : MonoBehaviour
         }
         else
         {
-            return;
+            isClose = false;
         }
 
     }
@@ -112,6 +117,7 @@ public class RabbitController : MonoBehaviour
             {
                 Debug.Log("Alice!");
                 StartCoroutine(CallRangeDecrease());
+                StartCoroutine(CallTextDuration());
                 alice.GetComponent<AliceController>().fearLevel += 5f;
             }
         }
@@ -127,6 +133,24 @@ public class RabbitController : MonoBehaviour
         }
     }
 
+    public void Soothe()
+    {
+        if(Input.GetKeyDown(KeyCode.Q) && inRange == true)
+        {
+            alice.GetComponent<AliceController>().fearLevel -= 15f;
+            sootheCharges -= 1f;
+            StartCoroutine(SootheTextTime());
+            if(sootheCharges <= 0f && inRange == true)
+            {
+                outOfCharges = false;
+                if(outOfCharges == false)
+                {
+                    return;
+                }
+            }
+        }
+    }
+
     IEnumerator CallRangeDecrease()
     {
         isCalling = true;
@@ -134,13 +158,27 @@ public class RabbitController : MonoBehaviour
         {
             callout = 0.5f;
         }
+        yield return new WaitForSeconds(5);
+        isCalling = false;
+    }
+
+    IEnumerator CallTextDuration()
+    {
         bool isActive = calloutText.activeSelf;
         calloutText.SetActive(true);
         calloutText.transform.position = this.transform.position + new Vector3(.5f, .5f, 0);
-        yield return new WaitForSeconds(5);
-        isCalling = false;
+        yield return new WaitForSeconds(1.5f);
         callout = stats.callRange;
         calloutText.SetActive(false);
+    }
+
+    IEnumerator SootheTextTime()
+    {
+        bool isActive = sootheText.activeSelf;
+        sootheText.SetActive(true);
+        sootheText.transform.position = this.transform.position + new Vector3(.5f, .5f, 0);
+        yield return new WaitForSeconds(2);
+        sootheText.SetActive(false);
     }
 
     IEnumerator HideAlice()

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject wonderlandPanel;
     public GameObject pausePanel;
     public Transform wonderlandTransition;
+    public Text sootheCharges;
 
     public Text timerText;
     public float timerNum;
@@ -33,7 +34,13 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        if(wonderlandTransition == null)
+        {
+            return;
+        }
+
         fearSlider.value = alice.GetComponent<AliceController>().fearLevel;
+        sootheCharges.text = "Charges: " + rabbit.GetComponent<RabbitController>().sootheCharges;
         MovePanelActivate();
         AliceAfraid();
         Timer();

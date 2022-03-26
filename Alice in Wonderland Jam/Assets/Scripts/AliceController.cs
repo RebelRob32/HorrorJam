@@ -99,7 +99,7 @@ public class AliceController : MonoBehaviour
     IEnumerator FollowForSeconds()
     {
         transform.position = Vector3.MoveTowards(this.transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
         transform.position = transform.position;
     }
 
@@ -128,7 +128,7 @@ public class AliceController : MonoBehaviour
     {
         
         transform.position = Vector3.MoveTowards(transform.position, closestHidingSpot.transform.position, Time.deltaTime * stats.speed);
-
+        transform.LookAt(transform.position, closestHidingSpot.transform.position);
         yield return new WaitForSeconds(5);
         
     }
