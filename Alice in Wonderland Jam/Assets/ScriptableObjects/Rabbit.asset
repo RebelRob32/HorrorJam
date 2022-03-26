@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9371a20132a493b479a89fda4c47aec6, type: 3}
   m_Name: Rabbit
   m_EditorClassIdentifier: 
-  closeRange: 0.5
+  closeRange: 0.75
   callRange: 2
   speed: 20
   rotateSpeed: 5

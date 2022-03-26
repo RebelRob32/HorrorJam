@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 222230082}
   - component: {fileID: 222230081}
   m_Layer: 5
-  m_Name: Text (2)
+  m_Name: TipsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1552,7 +1552,7 @@ GameObject:
   - component: {fileID: 1228563313}
   - component: {fileID: 1228563312}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GoalText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2424,7 +2424,7 @@ GameObject:
   - component: {fileID: 1696133058}
   - component: {fileID: 1696133057}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: ControlsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2496,7 +2496,10 @@ MonoBehaviour:
     Key to call after Alice and have her follow you
 
     Press the "R" Key tell Alice
-    to Hide in a nearby hiding spot'
+    to Hide in a nearby hiding spot
+
+    Press the "Q" Key to soothe Alice and reduce
+    her Fear Level'
 --- !u!222 &1696133058
 CanvasRenderer:
   m_ObjectHideFlags: 0
