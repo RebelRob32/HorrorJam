@@ -23,7 +23,7 @@ public class WonderlandTransition : MonoBehaviour
             return;
         }
 
-        if (alice.fearLevel <= 50f && rabbit.isClose == true)
+        if (alice.fearLevel <= 85f && rabbit.isClose == true)
         {
             bool isActive = wonderlandPortal.activeSelf;
             wonderlandPortal.SetActive(true);
@@ -37,7 +37,7 @@ public class WonderlandTransition : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Rabbit" && alice.fearLevel <= 50f && rabbit.isClose == true)
+        if(other.tag == "Rabbit" && alice.fearLevel <= 85f && rabbit.isClose == true)
         {
             gm.MoveToWonderland();
         }
@@ -45,7 +45,7 @@ public class WonderlandTransition : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Rabbit" && alice.fearLevel <= 50f && rabbit.isClose == true)
+        if (other.tag == "Rabbit" && alice.fearLevel <= 85f && rabbit.isClose == true)
         {
             gm.MoveToWonderland();
         }
