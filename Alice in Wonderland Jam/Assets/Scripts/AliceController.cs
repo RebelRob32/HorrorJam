@@ -48,6 +48,15 @@ public class AliceController : MonoBehaviour
         }
 
         FearSystem();
+
+        if(rabbit.GetComponent<RabbitController>().inRange == true)
+        {
+            transform.LookAt(rabbit.transform);
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void FixedUpdate()

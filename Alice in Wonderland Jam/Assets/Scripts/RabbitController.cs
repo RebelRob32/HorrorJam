@@ -8,7 +8,9 @@ public class RabbitController : MonoBehaviour
     public RabbitStats stats;
     public CharacterController controller;
     public Vector3 direction;
- 
+
+    public GameObject[] enemies;
+    public Transform closestEnemy;
 
     public GameObject alice;
     public GameObject calloutText;
@@ -21,6 +23,7 @@ public class RabbitController : MonoBehaviour
     public float sootheCharges;
 
     public bool inRange;
+    public bool enemInRange;
     public bool isCalling;
     public bool isClose;
     public bool isHiding;
@@ -32,7 +35,7 @@ public class RabbitController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, callout);
 
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, stats.closeRange);
     }
     #endregion
@@ -45,14 +48,20 @@ public class RabbitController : MonoBehaviour
         alice = GameObject.FindGameObjectWithTag("Alice");
         gm = GameObject.FindObjectOfType<GameManager>();
         startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
-        
+        closestEnemy = null;
 
         gameObject.transform.position = startPoint.transform.position;
         
     }
 
+    public void Start()
+    {
+        closestEnemy = GetEnemiesInRange();
+    }
+
     public void Update()
     {
+        
         checkRange();
         CallOut();
         Soothe();
@@ -104,6 +113,55 @@ public class RabbitController : MonoBehaviour
             isClose = false;
         }
 
+    }
+
+    public Transform GetEnemiesInRange()
+    {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                trans = enemy.transform;
+            }
+        }
+        return trans;
+    }
+
+    public void DistractEnemy()
+    {
+        if(closestEnemy != null)
+        {
+            float enemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
+
+            if(enemyDistance <= stats.closeRange)
+            {
+                enemInRange = true;
+            }
+            else
+            {
+                enemInRange = false;
+            }
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                if(enemInRange == true)
+                {
+                    Debug.Log("Distraction!");
+                }
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void CallOut()
