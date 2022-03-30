@@ -89,7 +89,6 @@ public class RabbitController : MonoBehaviour
         {
             inputDir = inputDir.normalized;
 
-            Debug.Log("walking");
             anim.SetBool("WALKING", true);
 
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(inputDir, Vector3.up), stats.rotateSpeed * Time.deltaTime);
