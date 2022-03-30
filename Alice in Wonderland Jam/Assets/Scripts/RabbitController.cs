@@ -29,6 +29,9 @@ public class RabbitController : MonoBehaviour
     public bool isHiding;
     public bool outOfCharges;
 
+
+    public Animator anim;
+
     #region WireSphere
     private void OnDrawGizmosSelected()
     {
@@ -81,14 +84,21 @@ public class RabbitController : MonoBehaviour
         inputs.z = Input.GetAxisRaw("Vertical");
 
         var inputDir = Quaternion.AngleAxis(followCam.rotation.eulerAngles.y, Vector3.up) * inputs;
-      
+
         if (inputDir.magnitude >= 0.1f)
         {
             inputDir = inputDir.normalized;
 
+            Debug.Log("walking");
+            anim.SetBool("WALKING", true);
+
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(inputDir, Vector3.up), stats.rotateSpeed * Time.deltaTime);
 
             controller.SimpleMove(inputDir.normalized * stats.speed * 2f * Time.deltaTime);
+        }
+        else
+        {
+            anim.SetBool("WALKING", false);
         }
     }
 
