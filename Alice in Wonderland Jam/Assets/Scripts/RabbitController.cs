@@ -56,6 +56,7 @@ public class RabbitController : MonoBehaviour
         checkRange();
         CallOut();
         Soothe();
+        DistractEnemy();
     }
 
     public void FixedUpdate()
