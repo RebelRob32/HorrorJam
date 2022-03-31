@@ -61,6 +61,14 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
 
+    public void Distracted()
+    {
+        if(GameObject.FindGameObjectWithTag("Rabbit").GetComponent<RabbitController>().enemInRange == true)
+        {
+            //walk twords Rabbit
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, stats.range);

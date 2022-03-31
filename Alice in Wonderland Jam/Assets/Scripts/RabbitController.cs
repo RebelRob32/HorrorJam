@@ -59,15 +59,16 @@ public class RabbitController : MonoBehaviour
 
     public void Start()
     {
-        closestEnemy = GetEnemiesInRange();
+        
     }
 
     public void Update()
     {
-        
+        closestEnemy = GetEnemiesInRange();
         checkRange();
         CallOut();
         Soothe();
+        DistractEnemy();
     }
 
     public void FixedUpdate()
@@ -150,7 +151,7 @@ public class RabbitController : MonoBehaviour
         {
             float enemyDistance = Vector3.Distance(transform.position, closestEnemy.transform.position);
 
-            if(enemyDistance <= stats.closeRange)
+            if(enemyDistance <= stats.callRange)
             {
                 enemInRange = true;
             }
@@ -164,6 +165,7 @@ public class RabbitController : MonoBehaviour
                 if(enemInRange == true)
                 {
                     Debug.Log("Distraction!");
+                    //call enemy to player
                 }
             }
         }
