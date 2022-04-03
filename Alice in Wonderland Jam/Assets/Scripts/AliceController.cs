@@ -32,11 +32,13 @@ public class AliceController : MonoBehaviour
         rabbit = GameObject.FindGameObjectWithTag("Rabbit");
         hidingSpots = GameObject.FindGameObjectsWithTag("Hiding");
 
-        closestHidingSpot = GetHidingSpots();
+        
     }
 
     public void Update()
     {
+        closestHidingSpot = GetHidingSpots();
+
         if(fearLevel <= 0f)
         {
             fearLevel = stats.fear;
