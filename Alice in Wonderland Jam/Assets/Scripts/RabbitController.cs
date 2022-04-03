@@ -9,6 +9,8 @@ public class RabbitController : MonoBehaviour
     public CharacterController controller;
     public Vector3 direction;
 
+    public GameObject radarSphere;
+
     public GameObject[] enemies;
     public Transform closestEnemy;
 
@@ -24,6 +26,7 @@ public class RabbitController : MonoBehaviour
 
     public bool inRange;
     public bool enemInRange;
+    public bool enemDistracted;
     public bool isCalling;
     public bool isClose;
     public bool isHiding;
@@ -165,7 +168,8 @@ public class RabbitController : MonoBehaviour
                 if(enemInRange == true)
                 {
                     Debug.Log("Distraction!");
-                    //call enemy to player
+                    StartCoroutine(DistractTime());
+                    
                 }
             }
         }
@@ -225,6 +229,10 @@ public class RabbitController : MonoBehaviour
         isCalling = true;
         if(isCalling == true)
         {
+            bool isActive = radarSphere.activeSelf;
+            radarSphere.SetActive(true);
+            yield return new WaitForSeconds(1);
+            radarSphere.SetActive(false);
             callout = 0.5f;
         }
         yield return new WaitForSeconds(5);
@@ -253,8 +261,21 @@ public class RabbitController : MonoBehaviour
     IEnumerator HideAlice()
     {
         isHiding = true;
+        bool isActive = radarSphere.activeSelf;
+        radarSphere.SetActive(true);
+        yield return new WaitForSeconds(1);
+        radarSphere.SetActive(false);
+
         yield return new WaitForSeconds(5);
         isHiding = false;
+    }
+
+    IEnumerator DistractTime()
+    {
+        bool isActive = radarSphere.activeSelf;
+        radarSphere.SetActive(true);
+        yield return new WaitForSeconds(1);
+        radarSphere.SetActive(false);
     }
 
    
