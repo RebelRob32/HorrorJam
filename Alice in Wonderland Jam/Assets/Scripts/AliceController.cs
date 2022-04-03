@@ -16,6 +16,9 @@ public class AliceController : MonoBehaviour
     public bool isScared;
     public bool isHiding;
 
+
+    public Animator animator;
+
     #region WireSphere
     private void OnDrawGizmosSelected()
     {
@@ -107,6 +110,7 @@ public class AliceController : MonoBehaviour
 
     IEnumerator FollowForSeconds()
     {
+        animator.SetBool("walking", true);
         transform.position = Vector3.MoveTowards(this.transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
         yield return new WaitForSeconds(5);
         transform.position = transform.position;
