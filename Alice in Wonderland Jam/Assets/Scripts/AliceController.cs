@@ -98,11 +98,23 @@ public class AliceController : MonoBehaviour
         {
             StartCoroutine(EscapeRabbit());
         }
+
+        if(rabbit.GetComponent<RabbitController>().isSending == true)
+        {
+            transform.position = Vector3.MoveTowards( transform.position, rabbit.GetComponent<RabbitController>().sendPoint.transform.position, Time.deltaTime * stats.speed * 2);
+        }
+        else
+        {
+            if(rabbit.GetComponent<RabbitController>().isSending == false)
+            {
+                return;
+            }
+        }
     }
 
     IEnumerator EscapeRabbit()
     {
-        transform.position = Vector3.MoveTowards(transform.position, -rabbit.transform.position, Time.deltaTime * stats.speed * 2);
+        Hide();
         yield return new WaitForSeconds(5);
         transform.position = transform.position;
     }
