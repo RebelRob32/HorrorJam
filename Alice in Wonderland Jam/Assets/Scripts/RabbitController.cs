@@ -280,8 +280,8 @@ public class RabbitController : MonoBehaviour
     {
             Vector3 playerPos = transform.position;
             Vector3 playerDirection = transform.forward;
-            Quaternion playerRotation = transform.rotation;
-            float spawnDistance = 10;
+            
+            float spawnDistance = 2;
 
             Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
             bool isActive = sendPoint.activeSelf;
