@@ -12,6 +12,7 @@ public class RabbitController : MonoBehaviour
     public GameObject radarSphere;
 
     public GameObject[] enemies;
+    public GameObject sendPoint;
     public Transform closestEnemy;
 
     public GameObject alice;
@@ -30,6 +31,7 @@ public class RabbitController : MonoBehaviour
     public bool isCalling;
     public bool isClose;
     public bool isHiding;
+    public bool isSending;
     public bool outOfCharges;
 
 
@@ -204,6 +206,13 @@ public class RabbitController : MonoBehaviour
                 alice.GetComponent<AliceController>().fearLevel += 10f;
             }
         }
+
+        if(Input.GetKey(KeyCode.V))
+        {
+            Debug.Log("Run!");
+            StartCoroutine(SendAlice());
+            
+        }
     }
 
     public void Soothe()
@@ -261,21 +270,47 @@ public class RabbitController : MonoBehaviour
     IEnumerator HideAlice()
     {
         isHiding = true;
-        bool isActive = radarSphere.activeSelf;
-        radarSphere.SetActive(true);
-        yield return new WaitForSeconds(1);
-        radarSphere.SetActive(false);
+        StartCoroutine(CastSphere());
 
         yield return new WaitForSeconds(5);
         isHiding = false;
     }
 
-    IEnumerator DistractTime()
+    IEnumerator SendAlice()
+    {
+            Vector3 playerPos = transform.position;
+            Vector3 playerDirection = transform.forward;
+            Quaternion playerRotation = transform.rotation;
+            float spawnDistance = 10;
+
+            Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
+            bool isActive = sendPoint.activeSelf;
+
+            StartCoroutine(CastSphere());
+
+            sendPoint.SetActive(true);
+            sendPoint.transform.position = spawnPos;
+            isSending = true;
+            yield return new WaitForSeconds(3);
+            isSending = false;
+            sendPoint.SetActive(false);
+    }
+
+    IEnumerator CastSphere()
     {
         bool isActive = radarSphere.activeSelf;
         radarSphere.SetActive(true);
         yield return new WaitForSeconds(1);
         radarSphere.SetActive(false);
+    }
+
+    IEnumerator DistractTime()
+    {
+        StartCoroutine(CastSphere());
+
+        yield return new WaitForSeconds(5);
+
+        
     }
 
    
