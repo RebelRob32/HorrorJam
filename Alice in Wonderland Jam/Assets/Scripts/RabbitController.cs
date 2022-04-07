@@ -209,8 +209,8 @@ public class RabbitController : MonoBehaviour
 
         if(Input.GetKey(KeyCode.V))
         {
-            Debug.Log("Run!");
-            StartCoroutine(SendAlice());
+            Debug.Log("Action!");
+            //interact with potions, key and lock
             
         }
     }
@@ -276,25 +276,7 @@ public class RabbitController : MonoBehaviour
         isHiding = false;
     }
 
-    IEnumerator SendAlice()
-    {
-            Vector3 playerPos = transform.position;
-            Vector3 playerDirection = transform.forward;
-            
-            float spawnDistance = 2;
-
-            Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
-            bool isActive = sendPoint.activeSelf;
-
-            StartCoroutine(CastSphere());
-
-            sendPoint.SetActive(true);
-            sendPoint.transform.position = spawnPos;
-            isSending = true;
-            yield return new WaitForSeconds(3);
-            isSending = false;
-            sendPoint.SetActive(false);
-    }
+   
 
     IEnumerator CastSphere()
     {

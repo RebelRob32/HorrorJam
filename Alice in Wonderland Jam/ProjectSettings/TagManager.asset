@@ -11,6 +11,10 @@ TagManager:
   - Hiding
   - Enemy
   - Ending
+  - EndPoint
+  - Lock
+  - SmallPotion
+  - BigPotion
   layers:
   - Default
   - TransparentFX
