@@ -30,7 +30,7 @@ public class RabbitController : MonoBehaviour
     public bool enemDistracted;
     public bool isCalling;
     public bool isClose;
-    public bool isHiding;
+    public bool hideAlice;
     public bool isSending;
     public bool outOfCharges;
 
@@ -74,6 +74,10 @@ public class RabbitController : MonoBehaviour
         CallOut();
         Soothe();
         DistractEnemy();
+        if (alice.GetComponent<AliceController>().isHiding == true)
+        {
+            hideAlice = false;
+        }
     }
 
     public void FixedUpdate()
@@ -203,7 +207,8 @@ public class RabbitController : MonoBehaviour
             if(distance <= callout)
             {
                 Debug.Log("Hide!");
-                StartCoroutine(HideAlice());
+                hideAlice = true;
+               
                 alice.GetComponent<AliceController>().fearLevel += 10f;
             }
         }
@@ -241,6 +246,7 @@ public class RabbitController : MonoBehaviour
 
         if(isCalling == true)
         {
+            
             bool isActive = radarSphere.activeSelf;
             radarSphere.SetActive(true);
             yield return new WaitForSeconds(1);
@@ -270,14 +276,7 @@ public class RabbitController : MonoBehaviour
         sootheText.SetActive(false);
     }
 
-    IEnumerator HideAlice()
-    {
-        isHiding = true;
-        StartCoroutine(CastSphere());
-
-        yield return new WaitForSeconds(5);
-        isHiding = false;
-    }
+ 
 
    
 
