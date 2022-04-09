@@ -194,6 +194,7 @@ public class RabbitController : MonoBehaviour
                 StartCoroutine(CallRangeDecrease());
                 StartCoroutine(CallTextDuration());
                 alice.GetComponent<AliceController>().fearLevel += 5f;
+                alice.GetComponent<AliceController>().isFollowing = true;
             }
         }
 
@@ -236,6 +237,8 @@ public class RabbitController : MonoBehaviour
     IEnumerator CallRangeDecrease()
     {
         isCalling = true;
+        
+
         if(isCalling == true)
         {
             bool isActive = radarSphere.activeSelf;

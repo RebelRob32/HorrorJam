@@ -15,6 +15,7 @@ public class AliceController : MonoBehaviour
     public bool rabbitClose;
     public bool isScared;
     public bool isHiding;
+    public bool isFollowing;
 
     #region WireSphere
     private void OnDrawGizmosSelected()
@@ -70,26 +71,23 @@ public class AliceController : MonoBehaviour
 
     public void FollowRabbit()
     {
-        if(rabbit.GetComponent<RabbitController>().isCalling == true)
+        if (isFollowing == true)
         {
-            StartCoroutine(FollowForSeconds());
+            transform.position = Vector3.MoveTowards(this.transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
         }
         else
-        {
-            transform.position = transform.position;
-        }
+            return;
+        
     }
 
     public void Hide()
     {
         if(rabbit.GetComponent<RabbitController>().isHiding == true)
         {
-            StartCoroutine(FindHidingSpot());
+           transform.position = Vector3.MoveTowards(transform.position, closestHidingSpot.transform.position, Time.deltaTime * stats.speed * 2);
+            transform.LookAt(transform.position, closestHidingSpot.transform.position);
         }
-        else
-        {
-            transform.position = transform.position;
-        }
+        
     }
 
     public void RunAway()
@@ -107,14 +105,6 @@ public class AliceController : MonoBehaviour
         transform.position = transform.position;
     }
 
-    IEnumerator FollowForSeconds()
-    {
-        transform.position = Vector3.MoveTowards(this.transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
-        yield return new WaitForSeconds(5);
-        transform.position = transform.position;
-    }
-
-   
 
     public Transform GetHidingSpots()
     {
@@ -135,14 +125,7 @@ public class AliceController : MonoBehaviour
         }
         return trans;
     }
-     IEnumerator FindHidingSpot()
-    {
-        
-        transform.position = Vector3.MoveTowards(transform.position, closestHidingSpot.transform.position, Time.deltaTime * stats.speed * 2);
-        transform.LookAt(transform.position, closestHidingSpot.transform.position);
-        yield return new WaitForSeconds(5);
-        
-    }
+   
     public void FearSystem()
     {
         float distance = Vector3.Distance(transform.position, rabbit.transform.position);
@@ -158,6 +141,7 @@ public class AliceController : MonoBehaviour
                 if (fearLevel <= 100f)
                 {
                     isScared = true;
+                    
                 }
 
             }
@@ -185,6 +169,12 @@ public class AliceController : MonoBehaviour
         if(hSpot == GameObject.FindGameObjectWithTag("Hiding"))
         {
             isHiding = true;
+            if(isHiding == true)
+            {
+                isFollowing = false;
+                
+            }
+           
         }
     }
 
