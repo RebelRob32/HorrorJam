@@ -11,17 +11,27 @@ public class Hiding : MonoBehaviour
         alice = GameObject.FindObjectOfType<AliceController>().gameObject;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.tag == "Alice")
+        if (other.gameObject.CompareTag("Alice"))
+        {
+            alice.GetComponent<AliceController>().isHiding = true;
+        }
+    }
+       
+    
+
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Alice"))
         {
             alice.GetComponent<AliceController>().isHiding = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
-        if (other.tag == "Alice")
+        if(other.gameObject.CompareTag("Alice"))
         {
             alice.GetComponent<AliceController>().isHiding = false;
         }

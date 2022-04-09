@@ -10,6 +10,7 @@ public class AliceController : MonoBehaviour
 
     public Transform closestHidingSpot;
     public float fearLevel;
+    public Vector3 hSpot;
     
 
     public bool rabbitClose;
@@ -39,6 +40,7 @@ public class AliceController : MonoBehaviour
     public void Update()
     {
         closestHidingSpot = GetHidingSpots();
+        hSpot = closestHidingSpot.transform.position;
 
         if(fearLevel <= 0f)
         {
@@ -82,10 +84,14 @@ public class AliceController : MonoBehaviour
 
     public void Hide()
     {
-        if(rabbit.GetComponent<RabbitController>().isHiding == true)
+        if(rabbit.GetComponent<RabbitController>().hideAlice == true)
         {
            transform.position = Vector3.MoveTowards(transform.position, closestHidingSpot.transform.position, Time.deltaTime * stats.speed * 2);
-            transform.LookAt(transform.position, closestHidingSpot.transform.position);
+          
+            if(rabbit.GetComponent<RabbitController>().isCalling == true)
+            {
+                FollowRabbit();
+            }
         }
         
     }
@@ -164,23 +170,26 @@ public class AliceController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider hSpot)
+    private void OnTriggerEnter(Collider other)
     {
-        if(hSpot == GameObject.FindGameObjectWithTag("Hiding"))
+        if(other.tag == "Hiding")
         {
             isHiding = true;
-            if(isHiding == true)
-            {
-                isFollowing = false;
-                
-            }
-           
+            isFollowing = false;
         }
     }
 
-    private void OnTriggerExit(Collider hSpot)
+    private void OnTriggerStay(Collider other)
     {
-        if (hSpot == GameObject.FindGameObjectWithTag("Hiding"))
+        if (other.tag == "Hiding")
+        {
+            isHiding = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Hiding")
         {
             isHiding = false;
         }
