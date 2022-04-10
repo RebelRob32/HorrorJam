@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     {
         alice = GameObject.FindGameObjectWithTag("Alice");
         rabbit = GameObject.FindGameObjectWithTag("Rabbit");
-
+        timerNum = 300f;
          if(wonderlandTransition == null)
         {
             return;
@@ -34,11 +34,13 @@ public class GameManager : MonoBehaviour
         wonderlandTransition = GameObject.FindGameObjectWithTag("Trigger").transform;
         Time.timeScale = 1;
 
-        timerNum = 300f;
+        
     }
 
     public void Update()
-    {
+    {   
+        
+        Timer();
         if(wonderlandTransition == null)
         {
             return;
@@ -48,7 +50,7 @@ public class GameManager : MonoBehaviour
         sootheCharges.text = "Charges: " + rabbit.GetComponent<RabbitController>().sootheCharges;
         MovePanelActivate();
         AliceAfraid();
-        Timer();
+        
         PausePanel();
     }
 

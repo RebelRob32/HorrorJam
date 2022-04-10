@@ -5,15 +5,19 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     public GameObject alice;
+    public GameObject rabbit;
     public EnemyStats stats;
     public GameManager gm;
 
     public Transform[] waypoints;
     public int curPoint = 0;
 
+    public bool isDistracted;
+
     public void Update()
     {
         alice = GameObject.FindGameObjectWithTag("Alice");
+        rabbit = GameObject.FindGameObjectWithTag("Rabbit");
         gm = GameObject.FindObjectOfType<GameManager>();
 
         if(alice == null)
@@ -26,6 +30,7 @@ public class EnemyPatrol : MonoBehaviour
     public void FixedUpdate()
     {
         Patrol();
+        Distracted();
     }
 
 
@@ -50,9 +55,10 @@ public class EnemyPatrol : MonoBehaviour
                 }
             }
 
-            if(distance <= stats.range)
+            if(distance <= stats.range && isDistracted == false)
             {
                 transform.position = Vector3.MoveTowards(transform.position, alice.transform.position, stats.speed * 1.5f * Time.deltaTime);
+                
             }
         }
         else
@@ -63,9 +69,14 @@ public class EnemyPatrol : MonoBehaviour
 
     public void Distracted()
     {
-        if(GameObject.FindGameObjectWithTag("Rabbit").GetComponent<RabbitController>().enemInRange == true)
+        if(GameObject.FindGameObjectWithTag("Rabbit").GetComponent<RabbitController>().enemDistracted == true)
         {
-            //walk twords Rabbit
+            isDistracted = true;
+            transform.position = Vector3.MoveTowards(transform.position, rabbit.transform.position, Time.deltaTime * stats.speed);
+        }
+        else
+        {
+            Patrol();
         }
     }
 

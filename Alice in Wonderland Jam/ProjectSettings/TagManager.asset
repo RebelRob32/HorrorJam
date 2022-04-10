@@ -13,8 +13,10 @@ TagManager:
   - Ending
   - EndPoint
   - Lock
-  - SmallPotion
-  - BigPotion
+  - Potion
+  - Key
+  - Door
+  - Item
   layers:
   - Default
   - TransparentFX
