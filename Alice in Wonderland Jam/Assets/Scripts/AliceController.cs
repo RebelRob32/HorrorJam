@@ -5,7 +5,7 @@ using UnityEngine;
 public class AliceController : MonoBehaviour
 {
     public AliceStats stats;
-    public Potions sizePotions;
+    
     public GameObject rabbit;
     public GameObject[] hidingSpots;
     public GameObject largePotion;
@@ -44,6 +44,12 @@ public class AliceController : MonoBehaviour
         rabbit = GameObject.FindGameObjectWithTag("Rabbit");
         hidingSpots = GameObject.FindGameObjectsWithTag("Hiding");
         doors = GameObject.FindGameObjectsWithTag("Door");
+        doorLock = GameObject.FindGameObjectWithTag("Lock");
+        largePotion = GameObject.Find("BigPotion");
+        smallPotion = GameObject.Find("SmallPotion");
+        smallKey = GameObject.Find("SmallKey");
+
+        isLocked = true;
 
         if(doors == null)
         {
@@ -53,11 +59,6 @@ public class AliceController : MonoBehaviour
         if(doorLock == null)
         {
             return;
-        }
-
-        if(doorLock != null)
-        {
-            isLocked = true;
         }
 
         if(largePotion == null)
@@ -89,6 +90,7 @@ public class AliceController : MonoBehaviour
         }
 
         FearSystem();
+        CheckLock();
 
         if(rabbit.GetComponent<RabbitController>().inRange == true)
         {
@@ -99,14 +101,8 @@ public class AliceController : MonoBehaviour
             return;
         }
 
-        if(isLocked == false)
-        {
-            foreach (GameObject door in doors)
-            {
-                bool isActive = door.activeSelf;
-                door.SetActive(false);
-            }
-        }
+        
+        
     }
 
     public void FixedUpdate()
@@ -114,11 +110,7 @@ public class AliceController : MonoBehaviour
         FollowRabbit();
         Hide();
         RunAway();
-
-        if(rabbit.GetComponent<RabbitController>().isSending == true)
-        {
-            GoToPoint();
-        }
+        GoToPoint();
 
     }
 
@@ -145,6 +137,33 @@ public class AliceController : MonoBehaviour
             }
         }
         
+    }
+
+    public void CheckLock()
+    {
+        if (isLocked == true)
+        {
+            foreach (GameObject door in doors)
+            {
+                bool isActive = door.activeSelf;
+                door.SetActive(true);
+            }
+
+            bool lockActive = doorLock.activeSelf;
+            doorLock.SetActive(true);
+        }
+        else
+        if(isLocked == false)
+        {
+            foreach (GameObject door in doors)
+            {
+                bool isActive = door.activeSelf;
+                door.SetActive(false);
+            }
+
+            bool lockActive = doorLock.activeSelf;
+            doorLock.SetActive(false);
+        }
     }
 
     public void RunAway()
@@ -193,7 +212,7 @@ public class AliceController : MonoBehaviour
            
             if (rabbitClose == true)
             {
-                transform.LookAt(rabbit.transform.position);
+                
                 fearLevel += 1f * Time.deltaTime;
                 if (fearLevel <= 100f)
                 {
@@ -205,7 +224,7 @@ public class AliceController : MonoBehaviour
             else
                 if(rabbitClose == false)
             {
-                transform.LookAt(transform.position);
+                
             }
            
         }
@@ -237,29 +256,39 @@ public class AliceController : MonoBehaviour
             isFollowing = false;
         }
 
-        if(other.tag == "KeyHole" && hasKey == true)
+        if(other.name == "LockTrigger" && hasKey == true)
         {
             isLocked = false;
         }
 
-        if(other.name == "Key")
+        if(other.name == "SmallKey")
         {
             bool isActive = smallKey.activeSelf;
             smallKey.SetActive(false);
+
+            hasKey = true;
+            Debug.Log("Has Key");
         }
 
         if(other.name == "BigPotion")
         {
-            transform.localScale = new Vector3(transform.localScale.x, 5F, transform.localScale.y);
+            float Offset = 2f;
+
+            transform.localScale = new Vector3(50f, 50F, 50f);
+            transform.position = new Vector3(rabbit.transform.position.x + Offset, rabbit.transform.position.y + Offset, rabbit.transform.position.z + Offset);
             bool isActive = largePotion.activeSelf;
             largePotion.SetActive(false);
+
+            isBig = true;
         }
 
         if(other.name == "SmallPotion")
         {
-            transform.localScale = new Vector3(transform.localScale.x, -5f, transform.localScale.y);
+            transform.localScale = new Vector3(4f, 4f, 4f);
             bool isActive = smallPotion.activeSelf;
             smallPotion.SetActive(false);
+
+            isBig = false;
         }
 
 

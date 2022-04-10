@@ -11,7 +11,7 @@ public class RabbitController : MonoBehaviour
 
     public GameObject radarSphere;
 
-    public GameObject[] potions;
+    public GameObject[] sceneObjects;
     public GameObject[] enemies;
     public GameObject sendPoint;
     public GameObject key;
@@ -59,8 +59,15 @@ public class RabbitController : MonoBehaviour
         alice = GameObject.FindGameObjectWithTag("Alice");
         gm = GameObject.FindObjectOfType<GameManager>();
         startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
+        key = GameObject.Find("SmallKey");
+        sceneObjects = GameObject.FindGameObjectsWithTag("Item");
+
+        if(key == null)
+        {
+            return;
+        }
         closestEnemy = null;
-        if(potions == null)
+        if(sceneObjects == null)
         {
             return;
         }
@@ -76,6 +83,7 @@ public class RabbitController : MonoBehaviour
 
     public void Update()
     {
+       
         closestObject = GetObjectsInRange();
         closestEnemy = GetEnemiesInRange();
         checkRange();
@@ -85,7 +93,17 @@ public class RabbitController : MonoBehaviour
         if (alice.GetComponent<AliceController>().isHiding == true)
         {
             hideAlice = false;
+        } 
+        
+        if(key == null)
+        {
+            return;
         }
+        if(sceneObjects == null)
+        {
+            return;
+        }
+
     }
 
     public void FixedUpdate()
@@ -164,30 +182,24 @@ public class RabbitController : MonoBehaviour
 
     public Transform GetObjectsInRange()
     {
-        potions = GameObject.FindGameObjectsWithTag("Potion");
-        key = GameObject.FindGameObjectWithTag("Key");
+        
+
         float closestDistance = Mathf.Infinity;
         Transform trans = null;
 
-        float curDist;
-        curDist = Vector3.Distance(transform.position, key.transform.position);
-        if(curDist < closestDistance)
-        {
-            closestDistance = curDist;
-            trans = key.transform;
-        }
-
-        foreach (GameObject potion in potions)
+        foreach (GameObject thing in sceneObjects)
         {
             float currentDist;
-            currentDist = Vector3.Distance(transform.position, potion.transform.position);
+            currentDist = Vector3.Distance(transform.position, thing.transform.position);
             if(currentDist < closestDistance)
             {
                 closestDistance = currentDist;
-                trans = potion.transform;
+                trans = thing.transform;
             }
         }
         return trans;
+
+      
     }
 
     public void DistractEnemy()
@@ -235,6 +247,11 @@ public class RabbitController : MonoBehaviour
                 StartCoroutine(CallTextDuration());
                 alice.GetComponent<AliceController>().fearLevel += 5f;
                 alice.GetComponent<AliceController>().isFollowing = true;
+
+                if(alice.GetComponent<AliceController>().isBig == true)
+                {
+                    callout = 4f;
+                }
             }
         }
 
@@ -249,7 +266,7 @@ public class RabbitController : MonoBehaviour
             }
         }
 
-        if(Input.GetKey(KeyCode.F))
+        if(Input.GetKey(KeyCode.C))
         {
             StartCoroutine(SendAliceToPoint());
            
@@ -273,6 +290,7 @@ public class RabbitController : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator CallRangeDecrease()
     {
@@ -322,15 +340,24 @@ public class RabbitController : MonoBehaviour
     IEnumerator DistractTime()
     {
         StartCoroutine(CastSphere());
-        yield return new WaitForSeconds(5);
+        enemDistracted = true;
+        yield return new WaitForSeconds(10);
+        enemDistracted = false;
     }
 
     IEnumerator SendAliceToPoint()
     {
         isSending = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         isSending = false;
     }
 
-   
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name == "EndPoint")
+        {
+            Debug.Log("End Game");
+            //activate end animation and end the game
+        }
+    }
 }
