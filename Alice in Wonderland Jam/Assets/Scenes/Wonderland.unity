@@ -5880,13 +5880,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 65897bb7044d8f94297503b9bfcedf80, type: 2}
+  sizePotions: {fileID: 0}
   rabbit: {fileID: 0}
   hidingSpots: []
+  largePotion: {fileID: 0}
+  smallPotion: {fileID: 0}
+  smallKey: {fileID: 0}
+  doors: []
+  doorLock: {fileID: 0}
   closestHidingSpot: {fileID: 0}
   fearLevel: 0
+  hSpot: {x: 0, y: 0, z: 0}
   rabbitClose: 0
   isScared: 0
   isHiding: 0
+  isFollowing: 0
+  isBig: 0
+  hasKey: 0
+  isLocked: 0
 --- !u!1 &1078399382
 GameObject:
   m_ObjectHideFlags: 0
@@ -9125,7 +9136,7 @@ GameObject:
   - component: {fileID: 1791954481}
   - component: {fileID: 1791954480}
   m_Layer: 0
-  m_Name: Cube (59)
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9315,7 +9326,7 @@ GameObject:
   - component: {fileID: 1811152684}
   - component: {fileID: 1811152683}
   m_Layer: 0
-  m_Name: Cube (60)
+  m_Name: DoorLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9535,7 +9546,7 @@ GameObject:
   - component: {fileID: 1857464297}
   - component: {fileID: 1857464296}
   m_Layer: 0
-  m_Name: Cube (58)
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

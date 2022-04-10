@@ -11,9 +11,12 @@ public class RabbitController : MonoBehaviour
 
     public GameObject radarSphere;
 
+    public GameObject[] potions;
     public GameObject[] enemies;
     public GameObject sendPoint;
+    public GameObject key;
     public Transform closestEnemy;
+    public Transform closestObject;
 
     public GameObject alice;
     public GameObject calloutText;
@@ -57,6 +60,10 @@ public class RabbitController : MonoBehaviour
         gm = GameObject.FindObjectOfType<GameManager>();
         startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
         closestEnemy = null;
+        if(potions == null)
+        {
+            return;
+        }
 
         gameObject.transform.position = startPoint.transform.position;
         
@@ -69,6 +76,7 @@ public class RabbitController : MonoBehaviour
 
     public void Update()
     {
+        closestObject = GetObjectsInRange();
         closestEnemy = GetEnemiesInRange();
         checkRange();
         CallOut();
@@ -154,6 +162,34 @@ public class RabbitController : MonoBehaviour
         return trans;
     }
 
+    public Transform GetObjectsInRange()
+    {
+        potions = GameObject.FindGameObjectsWithTag("Potion");
+        key = GameObject.FindGameObjectWithTag("Key");
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
+
+        float curDist;
+        curDist = Vector3.Distance(transform.position, key.transform.position);
+        if(curDist < closestDistance)
+        {
+            closestDistance = curDist;
+            trans = key.transform;
+        }
+
+        foreach (GameObject potion in potions)
+        {
+            float currentDist;
+            currentDist = Vector3.Distance(transform.position, potion.transform.position);
+            if(currentDist < closestDistance)
+            {
+                closestDistance = currentDist;
+                trans = potion.transform;
+            }
+        }
+        return trans;
+    }
+
     public void DistractEnemy()
     {
         if(closestEnemy != null)
@@ -213,11 +249,10 @@ public class RabbitController : MonoBehaviour
             }
         }
 
-        if(Input.GetKey(KeyCode.V))
+        if(Input.GetKey(KeyCode.F))
         {
-            Debug.Log("Action!");
-            //interact with potions, key and lock
-            
+            StartCoroutine(SendAliceToPoint());
+           
         }
     }
 
@@ -276,10 +311,6 @@ public class RabbitController : MonoBehaviour
         sootheText.SetActive(false);
     }
 
- 
-
-   
-
     IEnumerator CastSphere()
     {
         bool isActive = radarSphere.activeSelf;
@@ -291,10 +322,14 @@ public class RabbitController : MonoBehaviour
     IEnumerator DistractTime()
     {
         StartCoroutine(CastSphere());
-
         yield return new WaitForSeconds(5);
+    }
 
-        
+    IEnumerator SendAliceToPoint()
+    {
+        isSending = true;
+        yield return new WaitForSeconds(5);
+        isSending = false;
     }
 
    

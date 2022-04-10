@@ -26,6 +26,11 @@ public class GameManager : MonoBehaviour
     {
         alice = GameObject.FindGameObjectWithTag("Alice");
         rabbit = GameObject.FindGameObjectWithTag("Rabbit");
+
+         if(wonderlandTransition == null)
+        {
+            return;
+        }
         wonderlandTransition = GameObject.FindGameObjectWithTag("Trigger").transform;
         Time.timeScale = 1;
 

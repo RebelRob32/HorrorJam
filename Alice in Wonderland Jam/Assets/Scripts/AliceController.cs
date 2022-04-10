@@ -5,8 +5,15 @@ using UnityEngine;
 public class AliceController : MonoBehaviour
 {
     public AliceStats stats;
+    public Potions sizePotions;
     public GameObject rabbit;
     public GameObject[] hidingSpots;
+    public GameObject largePotion;
+    public GameObject smallPotion;
+    public GameObject smallKey;
+    public GameObject[] doors;
+    public GameObject doorLock;
+    
 
     public Transform closestHidingSpot;
     public float fearLevel;
@@ -17,6 +24,9 @@ public class AliceController : MonoBehaviour
     public bool isScared;
     public bool isHiding;
     public bool isFollowing;
+    public bool isBig;
+    public bool hasKey;
+    public bool isLocked;
 
     #region WireSphere
     private void OnDrawGizmosSelected()
@@ -33,6 +43,32 @@ public class AliceController : MonoBehaviour
         fearLevel = stats.fear;
         rabbit = GameObject.FindGameObjectWithTag("Rabbit");
         hidingSpots = GameObject.FindGameObjectsWithTag("Hiding");
+        doors = GameObject.FindGameObjectsWithTag("Door");
+
+        if(doors == null)
+        {
+            return;
+        }
+
+        if(doorLock == null)
+        {
+            return;
+        }
+
+        if(doorLock != null)
+        {
+            isLocked = true;
+        }
+
+        if(largePotion == null)
+        {
+            return;
+        }
+
+        if(smallPotion == null)
+        {
+            return;
+        }
 
         
     }
@@ -62,6 +98,15 @@ public class AliceController : MonoBehaviour
         {
             return;
         }
+
+        if(isLocked == false)
+        {
+            foreach (GameObject door in doors)
+            {
+                bool isActive = door.activeSelf;
+                door.SetActive(false);
+            }
+        }
     }
 
     public void FixedUpdate()
@@ -69,6 +114,12 @@ public class AliceController : MonoBehaviour
         FollowRabbit();
         Hide();
         RunAway();
+
+        if(rabbit.GetComponent<RabbitController>().isSending == true)
+        {
+            GoToPoint();
+        }
+
     }
 
     public void FollowRabbit()
@@ -170,6 +221,14 @@ public class AliceController : MonoBehaviour
         }
     }
 
+   public void GoToPoint()
+    {
+        if(rabbit.GetComponent<RabbitController>().isSending == true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, rabbit.GetComponent<RabbitController>().closestObject.transform.position, Time.deltaTime * stats.speed);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Hiding")
@@ -177,6 +236,33 @@ public class AliceController : MonoBehaviour
             isHiding = true;
             isFollowing = false;
         }
+
+        if(other.tag == "KeyHole" && hasKey == true)
+        {
+            isLocked = false;
+        }
+
+        if(other.name == "Key")
+        {
+            bool isActive = smallKey.activeSelf;
+            smallKey.SetActive(false);
+        }
+
+        if(other.name == "BigPotion")
+        {
+            transform.localScale = new Vector3(transform.localScale.x, 5F, transform.localScale.y);
+            bool isActive = largePotion.activeSelf;
+            largePotion.SetActive(false);
+        }
+
+        if(other.name == "SmallPotion")
+        {
+            transform.localScale = new Vector3(transform.localScale.x, -5f, transform.localScale.y);
+            bool isActive = smallPotion.activeSelf;
+            smallPotion.SetActive(false);
+        }
+
+
     }
 
     private void OnTriggerStay(Collider other)
